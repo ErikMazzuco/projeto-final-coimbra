@@ -7,12 +7,12 @@ Este projeto foi desenvolvido para a disciplina de **Dispositivos Móveis** com 
 1. botão flutuante `ok`
 2. Fontes Personalizadas
 3. Drawer(Menu lateral) `ok`
-4. appbar(Botoes inferiores de navegação) `ok`
+4. Appbar(Botoes inferiores de navegação) `ok`
 5. Animações
 6. Splash screan
 7. Tema escuro e uso do THEMES `ok`
-8. tela de Login `PROXIMO`
-9. banco de dados local e Nuvem
+8. Tela de Login `PROXIMO`
+9. Banco de dados local e Nuvem(SUPABASE)
 10. Uso do FVM
 11. Recurso de Acesibilidade
 
