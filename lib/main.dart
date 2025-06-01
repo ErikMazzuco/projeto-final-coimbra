@@ -1,76 +1,141 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const PoupexApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class PoupexApp extends StatefulWidget {
+  const PoupexApp({super.key});
 
+  @override
+  State<PoupexApp> createState() => _PoupexAppState();
+}
+
+class _PoupexAppState extends State<PoupexApp> {
+  bool _isDarkMode = false;
 
   @override
   Widget build(BuildContext context) {
+    final Color seedBlue = const Color(0xFF2F80ED); // Azul da logo
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Poupex',
+      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData(
-    
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: seedBlue),
+        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      darkTheme: ThemeData.dark().copyWith(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: seedBlue,
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
+      home: MyHomePage(
+        onToggleTheme: () {
+          setState(() {
+            _isDarkMode = !_isDarkMode;
+          });
+        },
+      ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  final VoidCallback onToggleTheme;
 
-  
-
-  final String title;
+  const MyHomePage({super.key, required this.onToggleTheme});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _selectedIndex = 0;
+  final List<String> _bills = [];
 
-  void _incrementCounter() {
+  void _addBill() {
     setState(() {
-     
-      _counter++;
+      _bills.add("Conta ${_bills.length + 1}");
     });
+  }
+
+  void _onNavItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  Widget _buildBody() {
+    if (_selectedIndex == 0) {
+      return ListView.builder(
+        itemCount: _bills.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: const Icon(Icons.receipt_long),
+            title: Text(_bills[index]),
+          );
+        },
+      );
+    } else if (_selectedIndex == 1) {
+      return const Center(child: Text('Resumo financeiro em breve...'));
+    } else {
+      return const Center(child: Text('Perfil e configurações em breve...'));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
-        
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-       
-        title: Text(widget.title),
+        title: const Text('Poupex'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.brightness_6),
+            onPressed: widget.onToggleTheme,
+          ),
+        ],
       ),
-      body: Center(
-       
-        child: Column(
-       
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: const [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Color(0xFF2F80ED)),
+              child: Text('Menu Poupex', style: TextStyle(color: Colors.white, fontSize: 24)),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Início'),
+            ),
+            ListTile(
+              leading: Icon(Icons.analytics),
+              title: Text('Resumo'),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Configurações'),
             ),
           ],
         ),
       ),
+      body: _buildBody(),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: _addBill,
+        tooltip: 'Adicionar Conta',
         child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onNavItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Contas'),
+          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Resumo'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+        ],
       ),
     );
   }
