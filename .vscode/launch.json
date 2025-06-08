@@ -1,0 +1,39 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "projeto-final-coimbra",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Poupex free",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_free.dart",
+            "args": [
+                "--flavor",
+                "free",
+                "--target",
+                "lib/main_free.dart"
+            ],
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Poupex premium",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_premium.dart",
+            "args": [
+                "--flavor",
+                "premium",
+                "--target",
+                "lib/main_premium.dart"
+            ],
+            "flutterMode": "release"
+        }
+    ]
+}

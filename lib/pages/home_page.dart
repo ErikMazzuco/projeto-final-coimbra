@@ -1,62 +1,24 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const PoupexApp());
-}
-
-class PoupexApp extends StatefulWidget {
-  const PoupexApp({super.key});
-
-  @override
-  State<PoupexApp> createState() => _PoupexAppState();
-}
-
-class _PoupexAppState extends State<PoupexApp> {
-  bool _isDarkMode = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final Color seedBlue = const Color(0xFF2F80ED); // Azul da logo
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Poupex',
-      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: seedBlue),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData.dark().copyWith(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: seedBlue,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      ),
-      home: MyHomePage(
-        onToggleTheme: () {
-          setState(() {
-            _isDarkMode = !_isDarkMode;
-          });
-        },
-      ),
-    );
-  }
-}
+import '../models/flavor_config.dart';
 
 class MyHomePage extends StatefulWidget {
   final VoidCallback onToggleTheme;
+  final FlavorConfig flavorConfig;
 
-  const MyHomePage({super.key, required this.onToggleTheme});
+  const MyHomePage({super.key, required this.onToggleTheme, required this.flavorConfig});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  // ignore: no_logic_in_create_state
+  State<MyHomePage> createState() => _MyHomePageState(flavorConfig : flavorConfig);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final FlavorConfig _flavorConfig;
   int _selectedIndex = 0;
   final List<String> _bills = [];
 
+  _MyHomePageState({required FlavorConfig flavorConfig}) : _flavorConfig = flavorConfig;
+  
   void _addBill() {
     setState(() {
       _bills.add("Conta ${_bills.length + 1}");
@@ -91,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Poupex'),
+        title: Text('Poupex ${FlavorConfig.title}'),
         actions: [
           IconButton(
             icon: const Icon(Icons.brightness_6),
