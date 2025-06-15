@@ -99,41 +99,69 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       drawer: Drawer(
-        child: Container(
-          decoration: BoxDecoration(gradient: _gradient),
-          child: ListView(
-            padding: EdgeInsets.zero,
+  child: Container(
+    decoration: BoxDecoration(gradient: _gradient),
+    child: Column(
+      children: [
+        const UserAccountsDrawerHeader(
+          decoration: BoxDecoration(color: Colors.transparent),
+          currentAccountPicture: CircleAvatar(
+            backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/98659687?v=4'),
+          ),
+          accountName: Text(
+            'Erik Mazzuco',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          accountEmail: Text(
+            'erik.mazzuco@email.com',
+            style: TextStyle(fontSize: 14),
+          ),
+        ),
+
+        // Menu principal
+        const ListTile(
+          leading: Icon(Icons.home, color: Colors.white),
+          title: Text('Início', style: TextStyle(color: Colors.white)),
+        ),
+        const ListTile(
+          leading: Icon(Icons.analytics, color: Colors.white),
+          title: Text('Resumo', style: TextStyle(color: Colors.white)),
+        ),
+        const ListTile(
+          leading: Icon(Icons.settings, color: Colors.white),
+          title: Text('Configurações', style: TextStyle(color: Colors.white)),
+        ),
+
+        const Spacer(), // empurra o restante para baixo
+
+        const Divider(color: Colors.white54),
+
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
             children: [
-              UserAccountsDrawerHeader(
-                decoration: const BoxDecoration(color: Colors.transparent),
-                currentAccountPicture: const CircleAvatar(
-                  backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/98659687?v=4'), // ou use AssetImage se for imagem local
-                ),
-                accountName: const Text(
-                  'Erik Mazzuco',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                accountEmail: const Text(
-                  'erik.mazzuco@email.com',
-                  style: TextStyle(fontSize: 14),
-                ),
+              Text(
+                'Poupex App',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
-              const ListTile(
-                leading: Icon(Icons.home, color: Colors.white),
-                title: Text('Início', style: TextStyle(color: Colors.white)),
+              SizedBox(height: 4),
+              Text(
+                'Versão 1.0.0',
+                style: TextStyle(color: Colors.white70, fontSize: 12),
               ),
-              const ListTile(
-                leading: Icon(Icons.analytics, color: Colors.white),
-                title: Text('Resumo', style: TextStyle(color: Colors.white)),
-              ),
-              const ListTile(
-                leading: Icon(Icons.settings, color: Colors.white),
-                title: Text('Configurações', style: TextStyle(color: Colors.white)),
+              SizedBox(height: 4),
+              Text(
+                '© 2025 Poupex',
+                style: TextStyle(color: Colors.white70, fontSize: 12),
               ),
             ],
           ),
         ),
-      ),
+      ],
+    ),
+  ),
+),
+
 
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
