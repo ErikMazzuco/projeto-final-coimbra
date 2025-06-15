@@ -8,8 +8,7 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.onToggleTheme, required this.flavorConfig});
 
   @override
-  // ignore: no_logic_in_create_state
-  State<MyHomePage> createState() => _MyHomePageState(flavorConfig : flavorConfig);
+  State<MyHomePage> createState() => _MyHomePageState(flavorConfig: flavorConfig);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -18,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<String> _bills = [];
 
   _MyHomePageState({required FlavorConfig flavorConfig}) : _flavorConfig = flavorConfig;
-  
+
   void _addBill() {
     setState(() {
       _bills.add("Conta ${_bills.length + 1}");
@@ -31,14 +30,49 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  LinearGradient get _gradient => const LinearGradient(
+        colors: [Colors.pinkAccent, Colors.blueAccent],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+
   Widget _buildBody() {
     if (_selectedIndex == 0) {
       return ListView.builder(
         itemCount: _bills.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            leading: const Icon(Icons.receipt_long),
-            title: Text(_bills[index]),
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            elevation: 4,
+            child: Row(
+              children: [
+                // Parte com degradê
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.4 - 24,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    gradient: _gradient,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      bottomLeft: Radius.circular(12),
+                    ),
+                  ),
+                  child: const Icon(Icons.receipt_long, color: Colors.white, size: 40),
+                  alignment: Alignment.center,
+                ),
+                // Parte com texto
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      _bills[index],
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         },
       );
@@ -54,6 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Poupex ${FlavorConfig.title}'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(gradient: _gradient),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.brightness_6),
@@ -62,42 +99,63 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: const [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Color(0xFF2F80ED)),
-              child: Text('Menu Poupex', style: TextStyle(color: Colors.white, fontSize: 24)),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Início'),
-            ),
-            ListTile(
-              leading: Icon(Icons.analytics),
-              title: Text('Resumo'),
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Configurações'),
-            ),
-          ],
+        child: Container(
+          decoration: BoxDecoration(gradient: _gradient),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              UserAccountsDrawerHeader(
+                decoration: const BoxDecoration(color: Colors.transparent),
+                currentAccountPicture: const CircleAvatar(
+                  backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/98659687?v=4'), // ou use AssetImage se for imagem local
+                ),
+                accountName: const Text(
+                  'Erik Mazzuco',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                accountEmail: const Text(
+                  'erik.mazzuco@email.com',
+                  style: TextStyle(fontSize: 14),
+                ),
+              ),
+              const ListTile(
+                leading: Icon(Icons.home, color: Colors.white),
+                title: Text('Início', style: TextStyle(color: Colors.white)),
+              ),
+              const ListTile(
+                leading: Icon(Icons.analytics, color: Colors.white),
+                title: Text('Resumo', style: TextStyle(color: Colors.white)),
+              ),
+              const ListTile(
+                leading: Icon(Icons.settings, color: Colors.white),
+                title: Text('Configurações', style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
         ),
       ),
+
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         onPressed: _addBill,
         tooltip: 'Adicionar Conta',
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onNavItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Contas'),
-          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Resumo'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(gradient: _gradient),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onNavItemTapped,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Contas'),
+            BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Resumo'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+          ],
+        ),
       ),
     );
   }
