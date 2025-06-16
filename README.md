@@ -94,5 +94,5 @@ Siga os passos abaixo para rodar o app na sua máquina:
 - **Flutter**: Framework utilizado para o desenvolvimento do aplicativo.
 
 - **Erik Matheus Mazzuco**: Desenvolvimento do projeto.
-- **LUIS FELIPE BASTIÃO**: Desenvolvimento do projeto.
+- **LUIZ FELIPE BASTIÃO**: Desenvolvimento do projeto.
 - **YASMIN YAMAMOTO**: Desenvolvimento do projeto.
