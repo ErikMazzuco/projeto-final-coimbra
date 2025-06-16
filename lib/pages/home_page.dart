@@ -4,8 +4,9 @@ import '../models/flavor_config.dart';
 class MyHomePage extends StatefulWidget {
   final VoidCallback onToggleTheme;
   final FlavorConfig flavorConfig;
+  final VoidCallback onLogout;
 
-  const MyHomePage({super.key, required this.onToggleTheme, required this.flavorConfig});
+  const MyHomePage({super.key, required this.onToggleTheme, required this.onLogout, required this.flavorConfig});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState(flavorConfig: flavorConfig);
@@ -103,22 +104,30 @@ class _MyHomePageState extends State<MyHomePage> {
     decoration: BoxDecoration(gradient: _gradient),
     child: Column(
       children: [
-        const UserAccountsDrawerHeader(
-          decoration: BoxDecoration(color: Colors.transparent),
-          currentAccountPicture: CircleAvatar(
-            backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/98659687?v=4'),
+        // Perfil com botão de sair embutido
+        UserAccountsDrawerHeader(
+          decoration: const BoxDecoration(color: Colors.transparent),
+          currentAccountPicture: const CircleAvatar(
+            backgroundImage: AssetImage('assets/icon/icon.png'),
           ),
-          accountName: Text(
+          accountName: const Text(
             'Erik Mazzuco',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          accountEmail: Text(
+          accountEmail: const Text(
             'erik.mazzuco@email.com',
             style: TextStyle(fontSize: 14),
           ),
+          otherAccountsPictures: [
+            IconButton(
+              icon: const Icon(Icons.logout, color: Colors.white),
+              tooltip: 'Sair',
+              onPressed: widget.onLogout,
+            ),
+          ],
         ),
 
-        // Menu principal
+        // Menu
         const ListTile(
           leading: Icon(Icons.home, color: Colors.white),
           title: Text('Início', style: TextStyle(color: Colors.white)),
@@ -132,28 +141,18 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text('Configurações', style: TextStyle(color: Colors.white)),
         ),
 
-        const Spacer(), // empurra o restante para baixo
+        const Spacer(),
 
         const Divider(color: Colors.white54),
-
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            children: [
-              Text(
-                'Poupex App',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
+            children: const [
+              Text('Poupex App', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
               SizedBox(height: 4),
-              Text(
-                'Versão 1.0.0',
-                style: TextStyle(color: Colors.white70, fontSize: 12),
-              ),
+              Text('Versão 1.0.0', style: TextStyle(color: Colors.white70, fontSize: 12)),
               SizedBox(height: 4),
-              Text(
-                '© 2025 Poupex',
-                style: TextStyle(color: Colors.white70, fontSize: 12),
-              ),
+              Text('© 2025 Poupex', style: TextStyle(color: Colors.white70, fontSize: 12)),
             ],
           ),
         ),
@@ -161,6 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ),
 ),
+
 
 
       body: _buildBody(),

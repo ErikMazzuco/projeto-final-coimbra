@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'models/flavor_config.dart';
 import 'pages/home_page.dart';
+import 'pages/login_page.dart';
 
 class PoupexApp extends StatefulWidget {
   final FlavorConfig flavorConfig;
   const PoupexApp({super.key, required this.flavorConfig});
-  
 
   @override
   State<PoupexApp> createState() => _PoupexAppState();
@@ -13,6 +13,19 @@ class PoupexApp extends StatefulWidget {
 
 class _PoupexAppState extends State<PoupexApp> {
   bool _isDarkMode = false;
+  bool _isLoggedIn = false;
+
+  void _toggleTheme() {
+    setState(() {
+      _isDarkMode = !_isDarkMode;
+    });
+  }
+
+  void _login() {
+    setState(() {
+      _isLoggedIn = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +45,17 @@ class _PoupexAppState extends State<PoupexApp> {
           brightness: Brightness.dark,
         ),
       ),
-      home: MyHomePage(
-        onToggleTheme: () {
+      home: _isLoggedIn
+    ? MyHomePage(
+        onToggleTheme: _toggleTheme,
+        onLogout: () {
           setState(() {
-            _isDarkMode = !_isDarkMode;
+            _isLoggedIn = false;
           });
-        }, flavorConfig: FlavorConfig(),
-      ),
+        },
+        flavorConfig: widget.flavorConfig,
+      )
+    : LoginPage(onLogin: _login),
     );
   }
 }
