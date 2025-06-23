@@ -224,11 +224,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: _buildBody(),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _selectedIndex == 0
+    ? FloatingActionButton(
         onPressed: _showAddBillDialog,
         tooltip: 'Adicionar Conta',
         child: const Icon(Icons.add),
-      ),
+      )
+    : null,
+
       bottomNavigationBar: Container(
         decoration: BoxDecoration(gradient: _gradient),
         child: BottomNavigationBar(
