@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/flavor_config.dart';
 import 'pages/home_page.dart';
 import 'pages/login_page.dart';
+import 'pages/splash_screen.dart'; 
 
 class PoupexApp extends StatefulWidget {
   final FlavorConfig flavorConfig;
@@ -29,7 +30,7 @@ class _PoupexAppState extends State<PoupexApp> {
 
   @override
   Widget build(BuildContext context) {
-    final Color seedBlue = const Color(0xFF2F80ED); // Azul da logo
+    final Color seedBlue = const Color(0xFF2F80ED);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -45,17 +46,15 @@ class _PoupexAppState extends State<PoupexApp> {
           brightness: Brightness.dark,
         ),
       ),
-      home: _isLoggedIn
-    ? MyHomePage(
+      home: SplashScreen(
+        flavorConfig: widget.flavorConfig,
         onToggleTheme: _toggleTheme,
         onLogout: () {
           setState(() {
             _isLoggedIn = false;
           });
         },
-        flavorConfig: widget.flavorConfig,
-      )
-    : LoginPage(onLogin: _login),
+      ),
     );
   }
 }
