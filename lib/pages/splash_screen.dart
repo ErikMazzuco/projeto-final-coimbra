@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import '../models/flavor_config.dart';
-import 'home_page.dart'; // seu MyHomePage
+import 'login_page.dart';
 
 class SplashScreen extends StatefulWidget {
+  final FlavorConfig flavorConfig;
   final VoidCallback onToggleTheme;
   final VoidCallback onLogout;
-  final FlavorConfig flavorConfig;
 
   const SplashScreen({
     super.key,
+    required this.flavorConfig,
     required this.onToggleTheme,
     required this.onLogout,
-    required this.flavorConfig,
   });
 
   @override
@@ -27,10 +27,11 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => MyHomePage(
-            onToggleTheme: widget.onToggleTheme,
-            onLogout: widget.onLogout,
-            flavorConfig: widget.flavorConfig,
+          builder: (context) => LoginPage(
+            onLogin: () {
+              // O próprio LoginPage deve cuidar de navegar para o HomePage
+              // então aqui não precisa navegar de novo
+            },
           ),
         ),
       );
@@ -45,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('assets/icon/icon.png', height: 100), // seu logo
+            Image.asset('assets/icon/icon.png', height: 100),
             const SizedBox(height: 20),
             const Text(
               'Carregando Poupex...',

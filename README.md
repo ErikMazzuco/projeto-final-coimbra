@@ -11,7 +11,7 @@ Este projeto foi desenvolvido para a disciplina de **Dispositivos Móveis** com 
 5. Animações
 6. Splash screan `ok`
 7. Tema escuro e uso do THEMES `ok`
-8. Tela de Login `PROXIMO`
+8. Tela de Login `OK`
 9. Banco de dados local e Nuvem(SUPABASE)`PROXIMO`
 10. Uso do FVM
 11. Recurso de Acesibilidade

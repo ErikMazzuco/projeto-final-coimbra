@@ -79,13 +79,13 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
-                        onPressed: widget.onLogin,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.pinkAccent,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          textStyle: const TextStyle(fontSize: 18),
-                        ),
                         child: const Text('Entrar'),
+                        onPressed: () {
+                          // Aqui você pode adicionar a lógica de autenticação
+                          // Por enquanto, apenas chama o callback onLogin
+                          widget.onLogin();
+                        },
+
                       ),
                       const SizedBox(height: 8),
                       TextButton(
