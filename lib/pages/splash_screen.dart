@@ -6,12 +6,14 @@ class SplashScreen extends StatefulWidget {
   final FlavorConfig flavorConfig;
   final VoidCallback onToggleTheme;
   final VoidCallback onLogout;
+   final VoidCallback onLogin;
 
   const SplashScreen({
     super.key,
     required this.flavorConfig,
     required this.onToggleTheme,
     required this.onLogout,
+    required this.onLogin,
   });
 
   @override
@@ -20,23 +22,14 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  void initState() {
-    super.initState();
+void initState() {
+  super.initState();
 
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage(
-            onLogin: () {
-              // O próprio LoginPage deve cuidar de navegar para o HomePage
-              // então aqui não precisa navegar de novo
-            },
-          ),
-        ),
-      );
-    });
-  }
+  Future.delayed(const Duration(seconds: 2), () {
+    widget.onLogin(); // vai marcar como "login necessário"
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,3 +53,4 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+

@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } else if (_selectedIndex == 1) {
       return const Center(child: Text('Resumo financeiro em breve...'));
     } else {
-      return const Center(child: Text('Perfil e configurações em breve...'));
+      return const Center(child: Text('Dashboard em breve...'));
     }
   }
 
@@ -244,7 +244,7 @@ class _MyHomePageState extends State<MyHomePage> {
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Contas'),
             BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Resumo'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+            BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
           ],
         ),
       ),
