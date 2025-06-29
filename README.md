@@ -5,16 +5,16 @@ Este projeto foi desenvolvido para a disciplina de **Dispositivos Móveis** com 
 ## 🎯 Objetivos
 
 1. botão flutuante `ok`
-2. Fontes Personalizadas
+2. Fontes Personalizadas `ok`
 3. Drawer(Menu lateral) `ok`
 4. Appbar(Botoes inferiores de navegação) `ok`
-5. Animações
+5. Animações ⚠️
 6. Splash screan `ok`
 7. Tema escuro e uso do THEMES `ok`
 8. Tela de Login `OK`
 9. Banco de dados local e Nuvem(SUPABASE)`PROXIMO`
-10. Uso do FVM
-11. Recurso de Acesibilidade
+10. Uso do FVM ⚠️
+11. Recurso de Acesibilidade ⚠️
 12. Flavor `ok`
 
 ## 🧠 Funcionalidades
