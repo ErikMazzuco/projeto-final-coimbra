@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:poupex/pages/cadastro_page.dart';
+import 'package:poupex/helpers/database_helper.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback onLogin;
@@ -18,6 +20,31 @@ class _LoginPageState extends State<LoginPage> {
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       );
+
+  Future<void> _realizarLogin() async {
+    final email = _emailController.text.trim();
+    final senha = _passwordController.text;
+
+    final sucesso = await DatabaseHelper.login(email, senha);
+
+    if (sucesso) {
+      widget.onLogin();
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Erro'),
+          content: const Text('E-mail ou senha inválidos.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,22 +106,23 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
+                        onPressed: _realizarLogin,
                         child: const Text('Entrar'),
-                        onPressed: () {
-                          // Aqui você pode adicionar a lógica de autenticação
-                          // Por enquanto, apenas chama o callback onLogin
-                          widget.onLogin();
-                        },
-
                       ),
                       const SizedBox(height: 8),
                       TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Esqueceu a senha?',
-                          style: TextStyle(color: Colors.pinkAccent),
-                        ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const CadastroPage()),
+                        );
+                      },
+                      child: const Text(
+                        'Não tem conta? Cadastre-se!',
+                        style: TextStyle(color: Colors.pinkAccent),
                       ),
+                    ),
+
                     ],
                   ),
                 ),

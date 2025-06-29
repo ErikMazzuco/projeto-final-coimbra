@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
 import '../models/flavor_config.dart';
-
+import 'package:poupex/helpers/database_helper.dart';
 class Bill {
+  final int? id;
   final String name;
   final double value;
 
-  Bill({required this.name, required this.value});
+  Bill({this.id, required this.name, required this.value});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'value': value,
+    };
+  }
+
+  factory Bill.fromMap(Map<String, dynamic> map) {
+    return Bill(
+      id: map['id'],
+      name: map['titulo'],
+      value: map['value'],
+    );
+  }
 }
+
 
 class MyHomePage extends StatefulWidget {
   final VoidCallback onToggleTheme;
@@ -28,6 +46,19 @@ class _MyHomePageState extends State<MyHomePage> {
   final FlavorConfig _flavorConfig;
   int _selectedIndex = 0;
   final List<Bill> _bills = [];
+  @override
+  void initState() {
+    super.initState();
+    _carregarContas();
+  }
+
+  Future<void> _carregarContas() async {
+    final data = await DatabaseHelper.getBills();
+    setState(() {
+      _bills.clear();
+      _bills.addAll(data.map((e) => Bill.fromMap(e)));
+    });
+  }
 
   _MyHomePageState({required FlavorConfig flavorConfig}) : _flavorConfig = flavorConfig;
 
@@ -59,17 +90,17 @@ class _MyHomePageState extends State<MyHomePage> {
             child: const Text('Cancelar'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               final name = nameController.text.trim();
               final value = double.tryParse(valueController.text.trim()) ?? 0.0;
 
               if (name.isNotEmpty && value > 0) {
-                setState(() {
-                  _bills.add(Bill(name: name, value: value));
-                });
+                await DatabaseHelper.insertBill(name, value);
+                await _carregarContas(); // atualiza da base
                 Navigator.of(context).pop();
               }
             },
+
             child: const Text('Adicionar'),
           ),
         ],
@@ -134,10 +165,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {
-                    setState(() {
-                      _bills.removeAt(index);
-                    });
+                  onPressed: () async {
+                    final billId = _bills[index].id;
+                    if (billId != null) {
+                      await DatabaseHelper.deleteBill(billId);
+                      await _carregarContas(); // atualiza
+                    }
                   },
                 ),
               ],
