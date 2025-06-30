@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/flavor_config.dart';
 import 'package:poupex/helpers/database_helper.dart';
+
 class Bill {
   final int? id;
   final String name;
@@ -25,7 +26,6 @@ class Bill {
   }
 }
 
-
 class MyHomePage extends StatefulWidget {
   final VoidCallback onToggleTheme;
   final FlavorConfig flavorConfig;
@@ -46,6 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final FlavorConfig _flavorConfig;
   int _selectedIndex = 0;
   final List<Bill> _bills = [];
+
+  _MyHomePageState({required FlavorConfig flavorConfig}) : _flavorConfig = flavorConfig;
+
   @override
   void initState() {
     super.initState();
@@ -60,8 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  _MyHomePageState({required FlavorConfig flavorConfig}) : _flavorConfig = flavorConfig;
-
   void _showAddBillDialog() {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController valueController = TextEditingController();
@@ -75,12 +76,20 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             TextField(
               controller: nameController,
-              decoration: const InputDecoration(labelText: 'Nome da Conta'),
+              decoration: const InputDecoration(
+                labelText: 'Nome da Conta',
+                hintText: 'Digite o nome da conta',
+              ),
+              textInputAction: TextInputAction.next,
             ),
             TextField(
               controller: valueController,
-              decoration: const InputDecoration(labelText: 'Valor (R\$)'),
+              decoration: const InputDecoration(
+                labelText: 'Valor (R\$)',
+                hintText: 'Digite o valor da conta',
+              ),
               keyboardType: TextInputType.numberWithOptions(decimal: true),
+              textInputAction: TextInputAction.done,
             ),
           ],
         ),
@@ -96,11 +105,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
               if (name.isNotEmpty && value > 0) {
                 await DatabaseHelper.insertBill(name, value);
-                await _carregarContas(); // atualiza da base
+                await _carregarContas();
                 Navigator.of(context).pop();
               }
             },
-
             child: const Text('Adicionar'),
           ),
         ],
@@ -126,54 +134,63 @@ class _MyHomePageState extends State<MyHomePage> {
         itemCount: _bills.length,
         itemBuilder: (context, index) {
           final bill = _bills[index];
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            elevation: 4,
-            child: Row(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.4 - 24,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    gradient: _gradient,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      bottomLeft: Radius.circular(12),
+          return Semantics(
+            label: 'Conta: ${bill.name}, valor: R\$ ${bill.value.toStringAsFixed(2)}',
+            child: Card(
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              elevation: 4,
+              child: Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.4 - 24,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      gradient: _gradient,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        bottomLeft: Radius.circular(12),
+                      ),
+                    ),
+                    child: const Icon(Icons.receipt_long, color: Colors.white, size: 40),
+                    alignment: Alignment.center,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            bill.name,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                          ),
+                          Text(
+                            'R\$ ${bill.value.toStringAsFixed(2)}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.black54
+                                  : Colors.white70,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  child: const Icon(Icons.receipt_long, color: Colors.white, size: 40),
-                  alignment: Alignment.center,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          bill.name,
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                        ),
-                        Text(
-                          'R\$ ${bill.value.toStringAsFixed(2)}',
-                          style: const TextStyle(fontSize: 14, color: Colors.black54),
-                        ),
-                      ],
-                    ),
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    tooltip: 'Excluir conta ${bill.name}',
+                    onPressed: () async {
+                      final billId = _bills[index].id;
+                      if (billId != null) {
+                        await DatabaseHelper.deleteBill(billId);
+                        await _carregarContas();
+                      }
+                    },
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () async {
-                    final billId = _bills[index].id;
-                    if (billId != null) {
-                      await DatabaseHelper.deleteBill(billId);
-                      await _carregarContas(); // atualiza
-                    }
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -197,6 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.brightness_6),
             onPressed: widget.onToggleTheme,
+            tooltip: 'Alternar tema',
           ),
         ],
       ),
@@ -226,17 +244,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              const ListTile(
-                leading: Icon(Icons.home, color: Colors.white),
-                title: Text('Início', style: TextStyle(color: Colors.white)),
+              Semantics(
+                button: true,
+                label: 'Ir para a página Início',
+                child: const ListTile(
+                  leading: Icon(Icons.home, color: Colors.white),
+                  title: Text('Início', style: TextStyle(color: Colors.white)),
+                ),
               ),
-              const ListTile(
-                leading: Icon(Icons.analytics, color: Colors.white),
-                title: Text('Resumo', style: TextStyle(color: Colors.white)),
+              Semantics(
+                button: true,
+                label: 'Ir para a página Resumo',
+                child: const ListTile(
+                  leading: Icon(Icons.analytics, color: Colors.white),
+                  title: Text('Resumo', style: TextStyle(color: Colors.white)),
+                ),
               ),
-              const ListTile(
-                leading: Icon(Icons.settings, color: Colors.white),
-                title: Text('Configurações', style: TextStyle(color: Colors.white)),
+              Semantics(
+                button: true,
+                label: 'Ir para Configurações',
+                child: const ListTile(
+                  leading: Icon(Icons.settings, color: Colors.white),
+                  title: Text('Configurações', style: TextStyle(color: Colors.white)),
+                ),
               ),
               const Spacer(),
               const Divider(color: Colors.white54),
@@ -258,13 +288,16 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: _buildBody(),
       floatingActionButton: _selectedIndex == 0
-    ? FloatingActionButton(
-        onPressed: _showAddBillDialog,
-        tooltip: 'Adicionar Conta',
-        child: const Icon(Icons.add),
-      )
-    : null,
-
+          ? Semantics(
+              button: true,
+              label: 'Adicionar nova conta',
+              child: FloatingActionButton(
+                onPressed: _showAddBillDialog,
+                tooltip: 'Adicionar Conta',
+                child: const Icon(Icons.add, semanticLabel: 'Adicionar Conta'),
+              ),
+            )
+          : null,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(gradient: _gradient),
         child: BottomNavigationBar(

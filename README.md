@@ -14,7 +14,7 @@ Este projeto foi desenvolvido para a disciplina de **Dispositivos Móveis** com 
 8. Tela de Login `OK`
 9. Banco de dados local e Nuvem(SUPABASE) `ok LOCAL` 
 10. Uso do FVM ⚠️
-11. Recurso de Acesibilidade ⚠️
+11. Recurso de Acesibilidade `OK`
 12. Flavor `ok`
 
 ## 🧠 Funcionalidades
