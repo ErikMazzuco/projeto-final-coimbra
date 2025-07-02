@@ -12,21 +12,25 @@ Este projeto foi desenvolvido para a disciplina de **Dispositivos Móveis** com 
 6. Splash screan `ok`
 7. Tema escuro e uso do THEMES `ok`
 8. Tela de Login `OK`
-9. Banco de dados local e Nuvem(SUPABASE) `ok LOCAL` 
+9. Banco de dados local e Nuvem(SUPABASE) `ok LOCAL`  ⚠️
 10. Uso do FVM ⚠️
 11. Recurso de Acesibilidade `OK`
 12. Flavor `ok`
+13. GitPod `ok`
 
+    
 ## 🧠 Funcionalidades
-
 - ⚠️ Implementar o Gitpod.
 - 🔁 Animação suave com `AnimatedBuilder` e `Transform.translate`.
 - 📱 Layout responsivo e organizado.
 - 🧼 Separação entre lógica e interface com arquitetura modular.
 - 🎲 Banco de dados.
+
+  
 ## 📜 Prototipação
 
   ///imagens aqui
+
 
 ## 📦 Estrutura do Projeto
 ```
