@@ -8,7 +8,7 @@ Este projeto foi desenvolvido para a disciplina de **Dispositivos Móveis** com 
 2. Fontes Personalizadas `ok`
 3. Drawer(Menu lateral) `ok`
 4. Appbar(Botoes inferiores de navegação) `ok`
-5. Animações ⚠️
+5. Animações `ok`
 6. Splash screan `ok`
 7. Tema escuro e uso do THEMES `ok`
 8. Tela de Login `OK`
