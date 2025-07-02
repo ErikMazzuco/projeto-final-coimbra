@@ -6,7 +6,7 @@ class SplashScreen extends StatefulWidget {
   final FlavorConfig flavorConfig;
   final VoidCallback onToggleTheme;
   final VoidCallback onLogout;
-   final VoidCallback onLogin;
+  final VoidCallback onLogin;
 
   const SplashScreen({
     super.key,
@@ -21,26 +21,61 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool startAnimation = false;
+
   @override
-void initState() {
-  super.initState();
+  void initState() {
+    super.initState();
 
-  Future.delayed(const Duration(seconds: 2), () {
-    widget.onLogin(); // vai marcar como "login necessário"
-  });
-}
+    // Inicia a animação após um pequeno atraso
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        startAnimation = true;
+      });
+    });
 
+    // Executa o onLogin após 2s (como você já fazia)
+    Future.delayed(const Duration(seconds: 2), () {
+      widget.onLogin();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('assets/icon/icon.png', height: 100),
+            // Animação de imagem descendo
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 1000),
+              margin: EdgeInsets.only(top: startAnimation ? 0 : 50, bottom: 20),
+              curve: Curves.easeOut,
+              child: Image.asset('assets/icon/icon.png', height: 100),
+            ),
+
+            // Nome do app aparecendo
+            AnimatedOpacity(
+              opacity: startAnimation ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 800),
+              child: const Text(
+                'Poupex',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ),
+
             const SizedBox(height: 20),
+
+            // Texto "Carregando..." e o indicador
             const Text(
               'Carregando Poupex...',
               style: TextStyle(color: Colors.white, fontSize: 18),
@@ -53,4 +88,3 @@ void initState() {
     );
   }
 }
-
