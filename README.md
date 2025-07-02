@@ -30,24 +30,23 @@ Este projeto foi desenvolvido para a disciplina de **Dispositivos Móveis** com 
 
 ## 📦 Estrutura do Projeto
 ```
-lib/   EXEMPLO TEMOS QUE CRIAR
-├── animations/
-│   └── spring_controller.dart        # Lógica de animação isolada
-├── core/                             # Arquivos de configuração e utilitários
-│   ├── themes.dart                   # Definições de temas (cores, fontes)
-│   └── routes.dart                   # Definições de rotas
-├── models/                           # Modelos de dados usados no app
-├── modules/                          # Módulos principais do app (organizados por funcionalidade)
-│   ├── home/                         # Tela inicial e lógica da home
-│   └── splash/                       # Tela de splash e inicialização
-│       ├── splash_controller.dart    # Tela de Carregamento
-│       └── splash_screen.dart        # Tela de Carregamento
-└── widgets/                          # Widgets reutilizáveis em várias partes do app
-│       ├── animated_product_card.dart# Card com animação de mola
-│       ├── drawer_widget.dart        # Barra lateral
-│       └── appbar_widget.dart        # App bar com carrinho de venda
+lib/
+├── app.dart                          # Configuração geral do app (provavelmente define o Flavor e o MaterialApp)
+├── main_free.dart                    # Ponto de entrada para a versão gratuita do app
+├── main_premium.dart                 # Ponto de entrada para a versão premium do app
 
-├── main.dart                         # Ponto de entrada do aplicativo
+├── helpers/                          # Funções utilitárias e serviços auxiliares
+│   └── database_helper.dart          # Classe responsável por gerenciar o banco de dados local (SQLite)
+
+├── models/                           # Modelos de dados usados no app
+│   └── flavor_config.dart            # Define o tipo de flavor (ex: free ou premium) e configurações associadas
+
+├── pages/                            # Telas principais do app
+│   ├── cadastro_page.dart            # Tela de cadastro de usuário
+│   ├── home_page.dart                # Tela inicial após login (provavelmente lista de dados, etc.)
+│   ├── login_page.dart               # Tela de login com autenticação
+│   └── splash_screen.dart            # Tela de splash inicial (aparece enquanto o app carrega)
+
 ```
 
 ### ▶️ Executar via Web (Gitpod)
