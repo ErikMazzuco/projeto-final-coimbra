@@ -35,19 +35,19 @@ Este projeto foi desenvolvido para a disciplina de **Dispositivos Móveis** com 
 ## 📦 Estrutura do Projeto
 ```
 lib/
-├── app.dart                          # Configuração geral do app (provavelmente define o Flavor e o MaterialApp)
+├── app.dart                          # Configuração geral do app
 ├── main_free.dart                    # Ponto de entrada para a versão gratuita do app
 ├── main_premium.dart                 # Ponto de entrada para a versão premium do app
 
 ├── helpers/                          # Funções utilitárias e serviços auxiliares
-│   └── database_helper.dart          # Classe responsável por gerenciar o banco de dados local (SQLite)
+│   └── database_helper.dart          # Classe responsável por gerenciar o banco de dados local (SQFLite)
 
 ├── models/                           # Modelos de dados usados no app
 │   └── flavor_config.dart            # Define o tipo de flavor (ex: free ou premium) e configurações associadas
 
 ├── pages/                            # Telas principais do app
 │   ├── cadastro_page.dart            # Tela de cadastro de usuário
-│   ├── home_page.dart                # Tela inicial após login (provavelmente lista de dados, etc.)
+│   ├── home_page.dart                # Tela inicial após login
 │   ├── login_page.dart               # Tela de login com autenticação
 │   └── splash_screen.dart            # Tela de splash inicial (aparece enquanto o app carrega)
 
